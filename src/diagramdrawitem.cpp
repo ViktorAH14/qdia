@@ -526,12 +526,11 @@ QRectF DiagramDrawItem::boundingRect() const
     qreal extra = pen().width() / 2.0 + myHandlerWidth;
 
     QRectF newRect = innerBoundingRect().adjusted(-extra, -extra, extra, extra);
-
     if(myDiagramType==Pie || myDiagramType==CirclePie){
         QRectF helper(mStartPoint+myPos2/2,mEndPoint+myPos2/2);
+        helper.adjust(-extra, -extra, extra, extra);
         newRect=newRect.united(helper);
     }
-
     return newRect;
 }
 
