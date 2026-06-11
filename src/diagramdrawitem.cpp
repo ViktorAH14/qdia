@@ -306,7 +306,7 @@ void DiagramDrawItem::setDimension(QPointF newPos)
     mPainterPath=createPath();
     setPath(mPainterPath);
     if(m_partnerItem){
-        m_partnerItem->setDimension(newPos);
+        m_partnerItem->setDimension(myPos2);
     }
 }
 
@@ -314,15 +314,20 @@ void DiagramDrawItem::mySetDimension(QPointF newPos)
 {
     if(myDiagramType==Circle|| myDiagramType==Square || myDiagramType==CirclePie){
         // special treatment in case of circle
-        if(myPos2.x()!=newPos.x()){
+        if(mySelPoint==3 || mySelPoint==7){ // left right
+            qreal value=fabs(newPos.x());
+            myPos2=QPointF(value,value);
+        }
+        if(mySelPoint==1 || mySelPoint==5){ // top bottom
+            qreal value=fabs(newPos.y());
+            myPos2=QPointF(value,value);
+        }
+        if(mySelPoint==0 || mySelPoint==2 || mySelPoint==4 || mySelPoint==6){
+            qreal value=qMax(fabs(newPos.y()),fabs(newPos.x()));
+            myPos2=QPointF(value,value);
+        }
+        if(mySelPoint<0 || mySelPoint>7){
             myPos2=newPos;
-            if(myPos2.y()<0) myPos2.setY(-fabs(myPos2.x()));
-                        else myPos2.setY(fabs(myPos2.x()));
-            }
-        else {
-            myPos2=newPos;
-            if(myPos2.x()<0) myPos2.setX(-fabs(myPos2.y()));
-            else myPos2.setX(fabs(myPos2.y()));
         }
     }
     else myPos2=newPos;
@@ -579,7 +584,7 @@ void DiagramDrawItem::mouseMoveEvent(QGraphicsSceneMouseEvent *e) {
             mySetDimension(mRect.point());
             setPos(mapToScene(anchorPoint));
             if(m_partnerItem){
-                m_partnerItem->setDimension(mRect.point());
+                m_partnerItem->setDimension(myPos2);
                 m_partnerItem->setPos(mapToScene(anchorPoint));
             }
         }else{
