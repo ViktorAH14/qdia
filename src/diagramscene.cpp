@@ -1099,16 +1099,20 @@ void DiagramScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
     }
     if(myMode== MoveItem && !selectedItems().isEmpty()){
         // update anchor points of textitems
+        bool changed=false;
         for(QGraphicsItem* item:selectedItems()){
             if(item->type()==DiagramTextItem::Type){
                 auto *textItem=qgraphicsitem_cast<DiagramTextItem*>(item);
                 QPointF offset=textItem->getLastOffset();
                 if(textItem->anchorPoint()+offset != textItem->pos()){
                     textItem->setCorrectedPos(textItem->pos()-offset);
+                    changed=true;
                 }
             }
         }
-        takeSnapshot();
+        if(changed){
+            takeSnapshot();
+        }
     }
     if(myMode==SelectInner || myMode==SelectOuter){
         enableAllItems(true);
