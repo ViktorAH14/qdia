@@ -1,3 +1,12 @@
+/*!
+ * \file diagramimage.cpp
+ * \brief Implementation file for DiagramImage class
+ *
+ * This file contains the implementation of the DiagramImage class methods.
+ * It provides functionality for creating, copying, serializing, and rendering
+ * image items in a diagram scene with support for selection and resizing.
+ */
+
 #include "diagramimage.h"
 #include "diagramscene.h"
 #include <QPainter>
